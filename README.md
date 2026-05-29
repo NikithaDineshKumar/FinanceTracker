@@ -30,10 +30,10 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 - 📅 **History** — View and analyze expenses from previous months
 - 📋 **Monthly Reports** — Detailed category-wise spending summaries
 
-### AI Features (Coming Soon)
-- 🤖 **AI Expense Categorizer** — Auto-categorize expenses from natural language
-- 💬 **RAG Budget Advisor** — Chat with AI about your spending using your real data
-- 📈 **Smart Insights** — LLM-generated personalized financial insights
+### AI Features
+- 🤖 **AI Expense Categorizer** — Auto-categorize expenses using Google Gemini 2.0
+- 💬 **RAG Budget Advisor** — Coming soon
+- 📈 **Smart Insights** — Coming soon
 
 ### Security Features
 - 🔒 JWT Authentication with 30-day expiry
@@ -69,12 +69,12 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 | dotenv | Environment variables |
 | Nodemon | Development server |
 
-### AI (Coming Soon)
+### AI
 | Technology | Purpose |
 |---|---|
-| Groq API | LLM inference |
-| Llama 3.1 | Language model |
-| RAG Pattern | Context-aware responses |
+| Google Gemini API | LLM inference |
+| Gemini 2.0 Flash | Expense categorization |
+| Rule-based NLP | Fallback categorization |
 
 ---
 
@@ -224,7 +224,7 @@ Milk • Cosmetics • Stationary • Dress • Service • Other
 - [x] Visual charts and dashboard
 - [x] Monthly history
 - [x] Responsive design
-- [ ] AI expense categorizer (Groq)
+- [x] AI expense categorizer (Google Gemini)
 - [ ] RAG budget advisor chatbot
 - [ ] Smart spending insights
 - [ ] PDF report export

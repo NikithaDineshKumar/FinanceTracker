@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import { getExpenses, addExpense, updateExpense, deleteExpense } from '../utils/api';
+import { getExpenses, addExpense, updateExpense, deleteExpense, categorizeExpense } from '../utils/api';
 import { toast } from 'react-toastify';
 
 const CATEGORIES = [
@@ -14,6 +14,8 @@ const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [aiText, setAiText] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
     amount: '',
@@ -57,6 +59,28 @@ const Expenses = () => {
       toast.error('Something went wrong!');
     }
   };
+  const handleAICategorize = async () => {
+  if (!aiText) {
+    toast.error('Please enter some text!');
+    return;
+  }
+  setAiLoading(true);
+  try {
+    const { data } = await categorizeExpense(aiText);
+    setForm({
+      ...form,
+      category: data.category,
+      type: data.type,
+      amount: data.amount || form.amount,
+      description: aiText
+    });
+    toast.success(`AI detected: ${data.category} (${data.confidence}% confident)`);
+    setShowForm(true);
+  } catch (error) {
+    toast.error('AI categorization failed!');
+  }
+  setAiLoading(false);
+};
 
   const handleEdit = (expense) => {
     setForm({
@@ -115,6 +139,35 @@ const Expenses = () => {
             {showForm ? 'Cancel' : '+ Add Expense'}
           </button>
         </div>
+        {/* AI Categorizer */}
+<div className="card">
+  <h3 style={{ marginBottom: '16px' }}>🤖 AI Expense Categorizer</h3>
+  <p style={{ color: '#888', fontSize: '14px', marginBottom: '16px' }}>
+    Type what you spent on and AI will auto-fill the category for you!
+  </p>
+  <div style={{ display: 'flex', gap: '12px' }}>
+    <input
+      type="text"
+      placeholder="e.g. bought vegetables for 200, paid electricity bill 500"
+      value={aiText}
+      onChange={(e) => setAiText(e.target.value)}
+      style={{
+        flex: 1,
+        padding: '10px 14px',
+        border: '2px solid #e1e5e9',
+        borderRadius: '8px',
+        fontSize: '14px'
+      }}
+    />
+    <button
+      className="btn btn-primary"
+      onClick={handleAICategorize}
+      disabled={aiLoading}
+    >
+      {aiLoading ? '🤖 Analyzing...' : '🤖 Auto Categorize'}
+    </button>
+  </div>
+</div>
 
         {/* Add/Edit Form */}
         {showForm && (
