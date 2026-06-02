@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import { getExpenses, getExpenseSummary, getBudget } from '../utils/api';
+import { getExpenses, getExpenseSummary, getBudget, getInsights } from '../utils/api';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const COLORS = ['#667eea', '#48bb78', '#f6ad55', '#fc8181', '#9f7aea', '#4fd1c5', '#f687b3', '#68d391'];
@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [budget, setBudget] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [insights, setInsights] = useState([]);
 
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
@@ -21,19 +22,26 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const [summaryRes, budgetRes, expensesRes] = await Promise.all([
-        getExpenseSummary(currentMonth, currentYear),
-        getBudget(currentMonth, currentYear),
-        getExpenses(currentMonth, currentYear)
-      ]);
-      setSummary(summaryRes.data);
-      setBudget(budgetRes.data);
-      setExpenses(expensesRes.data);
+  getExpenseSummary(currentMonth, currentYear),
+  getBudget(currentMonth, currentYear),
+  getExpenses(currentMonth, currentYear)
+]);
+setSummary(summaryRes.data);
+setBudget(budgetRes.data);
+setExpenses(expensesRes.data);
     } catch (error) {
       console.error(error);
     }
     setLoading(false);
   };
-
+const fetchInsights = async () => {
+  try {
+    const { data } = await getInsights();
+    setInsights(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
   const getBudgetHealth = () => {
     if (!budget || !summary) return { color: 'green', percentage: 0 };
     const percentage = (summary.total / budget.amount) * 100;
@@ -174,6 +182,46 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
         )}
+        {/* AI Insights */}
+<div className="card">
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+    <div className="card-title">🤖 AI Spending Insights</div>
+    <button className="btn btn-primary" onClick={fetchInsights}>
+      Generate Insights
+    </button>
+  </div>
+  {insights.length === 0 ? (
+    <p style={{ color: '#888', fontSize: '14px' }}>
+      Click "Generate Insights" to get AI-powered analysis of your spending!
+    </p>
+  ) : (
+    insights.map((insight, index) => (
+      <div key={index} style={{
+        padding: '16px',
+        marginBottom: '12px',
+        borderRadius: '8px',
+        borderLeft: `4px solid ${
+          insight.type === 'danger' ? '#fc8181' :
+          insight.type === 'warning' ? '#f6ad55' :
+          insight.type === 'success' ? '#48bb78' : '#667eea'
+        }`,
+        background: `${
+          insight.type === 'danger' ? '#fff5f5' :
+          insight.type === 'warning' ? '#fffaf0' :
+          insight.type === 'success' ? '#f0fff4' : '#ebf4ff'
+        }`
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: '4px' }}>
+          {insight.icon} {insight.title}
+        </div>
+        <div style={{ fontSize: '14px', color: '#555' }}>
+          {insight.message}
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
       </div>
     </>
   );

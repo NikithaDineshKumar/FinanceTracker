@@ -13,7 +13,7 @@ const needs = ['Food', 'Grocery', 'Vegetables', 'Medicine', 'Hospital', 'Milk', 
 
 const categorizeExpense = async (text) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `
       You are a personal finance assistant. 
       Analyze this expense description and return a JSON response.

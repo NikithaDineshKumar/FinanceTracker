@@ -25,3 +25,4 @@ export const getBudget = (month, year) => API.get(`/budget?month=${month}&year=$
 export const setBudget = (data) => API.post('/budget', data);
 export const getAllBudgets = () => API.get('/budget/all');
 export const categorizeExpense = (text) => API.post('/ai/categorize', { text });
+export const getInsights = () => API.get('/insights');
