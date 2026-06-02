@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
-import { getExpenses, getExpenseSummary, getBudget, getInsights } from '../utils/api';
+import { getExpenses, getExpenseSummary, getBudget, getInsights, sendChatMessage } from '../utils/api';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { generatePDFReport } from '../utils/pdfReport';
 
@@ -12,6 +12,10 @@ const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [insights, setInsights] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
+  const chatEndRef = useRef(null);
 
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
@@ -19,6 +23,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const fetchData = async () => {
     try {
@@ -34,6 +42,21 @@ const Dashboard = () => {
       console.error(error);
     }
     setLoading(false);
+  };
+
+  const sendMessage = async () => {
+    if (!chatInput.trim()) return;
+    const userMessage = chatInput.trim();
+    setChatInput('');
+    setChatMessages(prev => [...prev, { role: 'user', text: userMessage }]);
+    setChatLoading(true);
+    try {
+      const { data } = await sendChatMessage(userMessage);
+      setChatMessages(prev => [...prev, { role: 'bot', text: data.reply }]);
+    } catch (error) {
+      setChatMessages(prev => [...prev, { role: 'bot', text: 'Sorry, something went wrong. Please try again.' }]);
+    }
+    setChatLoading(false);
   };
 
   const fetchInsights = async () => {
@@ -110,7 +133,7 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-title">Budget Health</div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ 
+              <span style={{
                 color: health.color === 'green' ? '#48bb78' : health.color === 'yellow' ? '#f6ad55' : '#fc8181',
                 fontWeight: 700,
                 fontSize: '18px'
@@ -120,7 +143,7 @@ const Dashboard = () => {
               <span style={{ color: '#888' }}>{health.percentage.toFixed(1)}% used</span>
             </div>
             <div className="health-bar">
-              <div 
+              <div
                 className={`health-fill ${health.color}`}
                 style={{ width: `${Math.min(health.percentage, 100)}%` }}
               />
@@ -198,6 +221,119 @@ const Dashboard = () => {
               onClick={() => generatePDFReport(summary, budget, expenses, currentMonth, currentYear)}
             >
               📥 Download PDF
+            </button>
+          </div>
+        </div>
+
+        {/* RAG Budget Advisor Chatbot */}
+        <div className="card">
+          <div className="card-title">💬 Budget Advisor Chat</div>
+          <p style={{ color: '#888', fontSize: '14px', marginBottom: '16px' }}>
+            Ask me anything about your spending!
+          </p>
+
+          {/* Suggested Questions */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+            {[
+              'Am I overspending?',
+              'Where can I save money?',
+              'What is my top expense?',
+              'How is my budget doing?'
+            ].map((q, i) => (
+              <button
+                key={i}
+                onClick={() => setChatInput(q)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '20px',
+                  border: '1px solid #667eea',
+                  background: 'transparent',
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  fontSize: '13px'
+                }}
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+
+          {/* Chat Messages */}
+          <div style={{
+            height: '300px',
+            overflowY: 'auto',
+            border: '1px solid #eee',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '16px',
+            background: '#fafafa'
+          }}>
+            {chatMessages.length === 0 ? (
+              <p style={{ color: '#aaa', textAlign: 'center', marginTop: '100px', fontSize: '14px' }}>
+                Ask a question to get started!
+              </p>
+            ) : (
+              chatMessages.map((msg, index) => (
+                <div key={index} style={{
+                  display: 'flex',
+                  justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{
+                    maxWidth: '75%',
+                    padding: '10px 14px',
+                    borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                    background: msg.role === 'user' ? '#667eea' : '#fff',
+                    color: msg.role === 'user' ? '#fff' : '#333',
+                    fontSize: '14px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                  }}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))
+            )}
+            {chatLoading && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '12px' }}>
+                <div style={{
+                  padding: '10px 14px',
+                  borderRadius: '18px 18px 18px 4px',
+                  background: '#fff',
+                  fontSize: '14px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                  color: '#888'
+                }}>
+                  Thinking...
+                </div>
+              </div>
+            )}
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Chat Input */}
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              placeholder="Ask about your finances..."
+              style={{
+                flex: 1,
+                padding: '10px 16px',
+                borderRadius: '24px',
+                border: '1px solid #ddd',
+                fontSize: '14px',
+                outline: 'none'
+              }}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={sendMessage}
+              disabled={chatLoading}
+              style={{ borderRadius: '24px', padding: '10px 20px' }}
+            >
+              Send
             </button>
           </div>
         </div>

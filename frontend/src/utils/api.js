@@ -26,3 +26,4 @@ export const setBudget = (data) => API.post('/budget', data);
 export const getAllBudgets = () => API.get('/budget/all');
 export const categorizeExpense = (text) => API.post('/ai/categorize', { text });
 export const getInsights = () => API.get('/insights');
+export const sendChatMessage = (message) => API.post('/chatbot', { message });
