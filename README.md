@@ -1,19 +1,17 @@
-# FinanceTracker
 # 💰 Finance Tracker
 
-A full-stack personal finance tracking application built with the MERN stack. Track your daily expenses, set monthly budgets, visualize spending patterns, and get AI-powered financial insights.
+A full-stack personal finance tracking application built with the MERN stack. Track your daily expenses, set monthly budgets, visualize spending patterns, get AI-powered financial insights, and chat with an AI budget advisor.
 
-![Finance Tracker](https://img.shields.io/badge/MERN-Stack-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Status](https://img.shields.io/badge/Status-In%20Development-orange)
+![Finance Tracker](https://img.shields.io/badge/MERN-Stack-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Status](https://img.shields.io/badge/Status-Live-brightgreen)
 
 ---
 
 ## 🚀 Live Demo
-> Coming soon after deployment
 
----
+🌐 **Frontend:** [https://finance-tracker-gray-xi.vercel.app](https://finance-tracker-gray-xi.vercel.app)  
+🔧 **Backend API:** [https://financetracker-w0af.onrender.com](https://financetracker-w0af.onrender.com)
 
-## 📸 Screenshots
-> Coming soon
+> ⚠️ The backend is hosted on Render's free tier and may take 30-50 seconds to wake up on the first request.
 
 ---
 
@@ -22,18 +20,19 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 ### Core Features
 - 🔐 **Secure Authentication** — JWT-based login/signup with bcrypt password hashing
 - 💸 **Expense Management** — Add, edit, and delete daily expenses
-- 📂 **Smart Categories** — 16 predefined categories + custom category support
-- 🏷️ **Needs vs Wants** — Tag every expense to track spending habits
+- 📂 **Smart Categories** — 16 predefined categories (Food, Transport, Grocery, etc.)
+- 🏷️ **Needs vs Wants** — Automatically tag every expense to track spending habits
 - 📊 **Visual Dashboard** — Day-wise area charts and category pie charts
 - 💰 **Budget Management** — Set monthly budgets with health indicators
-- 🟢 **Budget Health** — Green/Yellow/Red indicator based on spending
-- 📅 **History** — View and analyze expenses from previous months
-- 📋 **Monthly Reports** — Detailed category-wise spending summaries
+- 🟢 **Budget Health** — Green/Yellow/Red indicator based on spending percentage
+- 📅 **Expense History** — View and analyze expenses from previous months
+- 📄 **PDF Report Export** — Download monthly reports as beautifully formatted PDFs
 
 ### AI Features
-- 🤖 **AI Expense Categorizer** — Auto-categorize expenses using Google Gemini 2.0
-- 💬 **RAG Budget Advisor** — Coming soon
-- 📈 **Smart Insights** — Coming soon
+- 🤖 **AI Expense Categorizer** — Auto-categorize expenses using Google Gemini 2.5 Flash
+- 🔄 **Rule-based Fallback** — Smart keyword-based categorization when AI is unavailable
+- 💬 **RAG Budget Advisor Chatbot** — Chat with an AI advisor about your spending habits
+- 📈 **Smart Spending Insights** — AI-generated personalized financial insights
 
 ### Security Features
 - 🔒 JWT Authentication with 30-day expiry
@@ -52,6 +51,7 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 | React Router DOM | Client-side routing |
 | Recharts | Data visualization |
 | Axios | HTTP requests |
+| jsPDF + jspdf-autotable | PDF report generation |
 | React Toastify | Notifications |
 | React Icons | Icon library |
 | CSS3 | Custom responsive styling |
@@ -61,43 +61,54 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 |---|---|
 | Node.js | Runtime environment |
 | Express.js | Web framework |
-| MongoDB | NoSQL database |
+| MongoDB Atlas | Cloud NoSQL database |
 | Mongoose | MongoDB ODM |
 | JWT | Authentication |
 | bcryptjs | Password hashing |
 | CORS | Cross-origin requests |
 | dotenv | Environment variables |
-| Nodemon | Development server |
 
 ### AI
 | Technology | Purpose |
 |---|---|
 | Google Gemini API | LLM inference |
-| Gemini 2.0 Flash | Expense categorization |
+| Gemini 2.5 Flash | Expense categorization, insights, chatbot |
 | Rule-based NLP | Fallback categorization |
+
+### Deployment
+| Service | Purpose |
+|---|---|
+| Vercel | Frontend hosting |
+| Render | Backend hosting |
+| MongoDB Atlas | Cloud database |
 
 ---
 
 ## 📁 Project Structure
 
-```
 FinanceTracker/
 ├── backend/
 │   ├── config/
-│   │   └── db.js              # MongoDB connection
+│   │   └── db.js                  # MongoDB connection
 │   ├── middleware/
-│   │   └── auth.js            # JWT auth middleware
+│   │   └── auth.js                # JWT auth middleware
 │   ├── models/
-│   │   ├── User.js            # User schema
-│   │   ├── Expense.js         # Expense schema
-│   │   └── Budget.js          # Budget schema
+│   │   ├── User.js                # User schema
+│   │   ├── Expense.js             # Expense schema
+│   │   └── Budget.js              # Budget schema
 │   ├── routes/
-│   │   ├── auth.js            # Auth routes
-│   │   ├── expenses.js        # Expense CRUD routes
-│   │   └── budget.js          # Budget routes
-│   ├── .env                   # Environment variables (not pushed)
-│   ├── .env.example           # Environment variables template
-│   └── server.js              # Express server entry point
+│   │   ├── auth.js                # Auth routes
+│   │   ├── expenses.js            # Expense CRUD routes
+│   │   ├── budget.js              # Budget routes
+│   │   ├── ai.js                  # AI categorizer route
+│   │   ├── insights.js            # AI insights route
+│   │   └── chatbot.js             # RAG chatbot route
+│   ├── services/
+│   │   ├── aiCategorizer.js       # Gemini categorization service
+│   │   ├── insightsService.js     # Gemini insights service
+│   │   └── chatbotService.js      # Gemini chatbot service
+│   ├── .env                       # Environment variables (not pushed)
+│   └── server.js                  # Express server entry point
 ├── frontend/
 │   ├── public/
 │   └── src/
@@ -115,13 +126,13 @@ FinanceTracker/
 │       │   ├── Budget.js
 │       │   └── History.js
 │       ├── utils/
-│       │   └── api.js
+│       │   ├── api.js             # Axios API calls
+│       │   └── pdfReport.js       # PDF generation utility
 │       ├── App.js
 │       └── App.css
 ├── .gitignore
 ├── LICENSE
 └── README.md
-```
 
 ---
 
@@ -130,7 +141,7 @@ FinanceTracker/
 ### Prerequisites
 - Node.js v18+
 - MongoDB (local) or MongoDB Atlas account
-- Git
+- Google Gemini API key
 
 ### 1. Clone the repository
 ```bash
@@ -150,6 +161,7 @@ PORT=5000
 MONGO_URI=mongodb://localhost:27017/financetracker
 JWT_SECRET=your_jwt_secret_key
 NODE_ENV=development
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 Start the backend server:
@@ -194,14 +206,20 @@ Go to [http://localhost:3000](http://localhost:3000)
 | POST | `/api/budget` | Set/update budget |
 | GET | `/api/budget/all` | Get all budgets |
 
+### AI Routes (Protected)
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/ai/categorize` | AI expense categorization |
+| GET | `/api/insights` | Get AI spending insights |
+| POST | `/api/chatbot` | Chat with budget advisor |
+
 ---
 
 ## 📊 Expense Categories
-```
-Food • Transport • Shopping • Grocery • Vegetables
-Tuition • Maid • Current • Hospital • Medicine
-Milk • Cosmetics • Stationary • Dress • Service • Other
-```
+
+**Needs:** Food • Grocery • Vegetables • Medicine • Hospital • Milk • Current • Tuition
+
+**Wants:** Shopping • Transport • Cosmetics • Dress • Service • Maid • Stationary • Other
 
 ---
 
@@ -213,6 +231,7 @@ Milk • Cosmetics • Stationary • Dress • Service • Other
 | `MONGO_URI` | MongoDB connection string |
 | `JWT_SECRET` | Secret key for JWT tokens |
 | `NODE_ENV` | Environment (development/production) |
+| `GEMINI_API_KEY` | Google Gemini API key |
 
 ---
 
@@ -223,27 +242,31 @@ Milk • Cosmetics • Stationary • Dress • Service • Other
 - [x] Budget management
 - [x] Visual charts and dashboard
 - [x] Monthly history
-- [x] Responsive design
-- [x] AI expense categorizer (Google Gemini)
-- [ ] RAG budget advisor chatbot
-- [ ] Smart spending insights
-- [ ] PDF report export
-- [ ] Deploy to Vercel + Render
+- [x] Responsive design with hamburger menu
+- [x] AI expense categorizer (Google Gemini 2.5 Flash)
+- [x] Rule-based fallback categorizer
+- [x] Smart spending insights
+- [x] RAG budget advisor chatbot
+- [x] PDF report export
+- [x] Deploy to Vercel + Render + MongoDB Atlas
 
 ---
 
 ## 🤝 Contributing
+
 This is a personal project but feel free to fork and build on it!
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the MIT License.
 
 ---
 
 ## 👩‍💻 Author
-**Nikitha Dinesh Kumar**
+
+**Nikitha Dinesh Kumar**  
 - GitHub: [@NikithaDineshKumar](https://github.com/NikithaDineshKumar)
 
 ---
