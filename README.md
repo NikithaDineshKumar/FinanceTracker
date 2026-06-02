@@ -87,53 +87,79 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 ## 📁 Project Structure
 
 FinanceTracker/
+│
 ├── backend/
+│   │
 │   ├── config/
-│   │   └── db.js                  # MongoDB connection
+│   │   └── db.js
+│   │
 │   ├── middleware/
-│   │   └── auth.js                # JWT auth middleware
+│   │   └── auth.js
+│   │
 │   ├── models/
-│   │   ├── User.js                # User schema
-│   │   ├── Expense.js             # Expense schema
-│   │   └── Budget.js              # Budget schema
+│   │   ├── User.js
+│   │   ├── Expense.js
+│   │   └── Budget.js
+│   │
 │   ├── routes/
-│   │   ├── auth.js                # Auth routes
-│   │   ├── expenses.js            # Expense CRUD routes
-│   │   ├── budget.js              # Budget routes
-│   │   ├── ai.js                  # AI categorizer route
-│   │   ├── insights.js            # AI insights route
-│   │   └── chatbot.js             # RAG chatbot route
+│   │   ├── auth.js
+│   │   ├── expenses.js
+│   │   ├── budget.js
+│   │   ├── ai.js
+│   │   ├── insights.js
+│   │   └── chatbot.js
+│   │
 │   ├── services/
-│   │   ├── aiCategorizer.js       # Gemini categorization service
-│   │   ├── insightsService.js     # Gemini insights service
-│   │   └── chatbotService.js      # Gemini chatbot service
-│   ├── .env                       # Environment variables (not pushed)
-│   └── server.js                  # Express server entry point
+│   │   ├── aiCategorizer.js
+│   │   ├── insightsService.js
+│   │   └── chatbotService.js
+│   │
+│   ├── .env
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
+│
 ├── frontend/
+│   │
 │   ├── public/
-│   └── src/
-│       ├── components/
-│       │   ├── Auth/
-│       │   │   └── PrivateRoute.js
-│       │   └── Navbar.js
-│       ├── context/
-│       │   └── AuthContext.js
-│       ├── pages/
-│       │   ├── Login.js
-│       │   ├── Register.js
-│       │   ├── Dashboard.js
-│       │   ├── Expenses.js
-│       │   ├── Budget.js
-│       │   └── History.js
-│       ├── utils/
-│       │   ├── api.js             # Axios API calls
-│       │   └── pdfReport.js       # PDF generation utility
-│       ├── App.js
-│       └── App.css
+│   │   ├── index.html
+│   │   ├── favicon.ico
+│   │   └── manifest.json
+│   │
+│   ├── src/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── Auth/
+│   │   │   │   └── PrivateRoute.js
+│   │   │   │
+│   │   │   └── Navbar.js
+│   │   │
+│   │   ├── context/
+│   │   │   └── AuthContext.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── Dashboard.js
+│   │   │   ├── Expenses.js
+│   │   │   ├── Budget.js
+│   │   │   └── History.js
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── api.js
+│   │   │   └── pdfReport.js
+│   │   │
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   ├── index.js
+│   │   └── index.css
+│   │
+│   ├── package.json
+│   └── package-lock.json
+│
 ├── .gitignore
 ├── LICENSE
 └── README.md
-
 ---
 
 ## ⚙️ Installation & Setup
