@@ -86,21 +86,17 @@ A full-stack personal finance tracking application built with the MERN stack. Tr
 
 ## 📁 Project Structure
 
+```text
 FinanceTracker/
-│
 ├── backend/
-│   │
 │   ├── config/
 │   │   └── db.js
-│   │
 │   ├── middleware/
 │   │   └── auth.js
-│   │
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Expense.js
 │   │   └── Budget.js
-│   │
 │   ├── routes/
 │   │   ├── auth.js
 │   │   ├── expenses.js
@@ -108,30 +104,25 @@ FinanceTracker/
 │   │   ├── ai.js
 │   │   ├── insights.js
 │   │   └── chatbot.js
-│   │
 │   ├── services/
 │   │   ├── aiCategorizer.js
 │   │   ├── insightsService.js
 │   │   └── chatbotService.js
-│   │
 │   ├── .env
 │   ├── package.json
 │   ├── package-lock.json
 │   └── server.js
 │
 ├── frontend/
-│   │
 │   ├── public/
 │   │   ├── index.html
 │   │   ├── favicon.ico
 │   │   └── manifest.json
 │   │
 │   ├── src/
-│   │   │
 │   │   ├── components/
 │   │   │   ├── Auth/
 │   │   │   │   └── PrivateRoute.js
-│   │   │   │
 │   │   │   └── Navbar.js
 │   │   │
 │   │   ├── context/
@@ -160,7 +151,7 @@ FinanceTracker/
 ├── .gitignore
 ├── LICENSE
 └── README.md
----
+```
 
 ## ⚙️ Installation & Setup
 
