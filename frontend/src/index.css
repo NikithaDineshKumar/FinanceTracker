@@ -11,3 +11,81 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* ===== DARK MODE ===== */
+body.dark {
+  background-color: #0f1117;
+  color: #e2e8f0;
+}
+
+body.dark .card,
+body.dark .stat-card {
+  background: #1a1d27;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+body.dark .card-title,
+body.dark .stat-label {
+  color: #a0aec0;
+}
+
+body.dark .card-value,
+body.dark .stat-value,
+body.dark .page-title {
+  color: #e2e8f0;
+}
+
+body.dark .expense-table th {
+  background: #1a1d27;
+  color: #a0aec0;
+  border-bottom-color: #2d3748;
+}
+
+body.dark .expense-table td {
+  border-bottom-color: #2d3748;
+  color: #e2e8f0;
+}
+
+body.dark .expense-table tr:hover {
+  background: #2d3748;
+}
+
+body.dark .form-group input,
+body.dark .form-group select,
+body.dark .form-group textarea {
+  background: #1a1d27;
+  border-color: #2d3748;
+  color: #e2e8f0;
+}
+
+body.dark .form-group label {
+  color: #a0aec0;
+}
+
+body.dark .health-bar {
+  background: #2d3748;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.mobile-theme-toggle {
+  margin: 8px 24px;
+  color: white;
+  font-weight: 500;
+}

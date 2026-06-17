@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { toast } from 'react-toastify';
-import { FiMenu, FiX, FiLogOut, FiHome, FiDollarSign, FiPieChart, FiClock } from 'react-icons/fi';
+import { FiMenu, FiX, FiLogOut, FiHome, FiDollarSign, FiPieChart, FiClock, FiSun, FiMoon } from 'react-icons/fi';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { darkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -41,6 +43,9 @@ const Navbar = () => {
           </Link>
         ))}
         <span className="nav-user">Hi, {user?.name}!</span>
+        <button className="theme-toggle" onClick={toggleTheme} title="Toggle Dark Mode">
+          {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+        </button>
         <button className="logout-btn" onClick={handleLogout}>
           <FiLogOut /> Logout
         </button>
@@ -65,6 +70,10 @@ const Navbar = () => {
             </Link>
           ))}
           <span className="nav-user">Hi, {user?.name}!</span>
+          <button className="theme-toggle mobile-theme-toggle" onClick={toggleTheme}>
+            {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+            {darkMode ? ' Light Mode' : ' Dark Mode'}
+          </button>
           <button className="logout-btn" onClick={handleLogout}>
             <FiLogOut /> Logout
           </button>
